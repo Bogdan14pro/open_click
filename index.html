@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кликер-игра</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: url('https://i.ibb.co/nQYwSdJ/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #score {
+            font-size: 24px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        #scoreValue {
+            display: inline-block;
+        }
+        #coinIcon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            margin-left: 5px;
+            position: absolute;
+            animation: moveCoin 0.5s ease;
+        }
+        #clickerButton {
+            cursor: pointer;
+            animation: bounce 0.2s ease;
+            transition: transform 0.1s ease;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Добавленный код */
+        }
+        #clickerButton img {
+            width: 300px; /* Установите размер изображения по вашему усмотрению */
+            height: auto;
+        }
+        #outputButton {
+            cursor: pointer;
+            background-color: #6c5ce7; /* Фиолетовый цвет кнопки вывода */
+            color: #fff; /* Белый цвет текста */
+            padding: 15px 30px; /* Отступы внутри кнопки */
+            font-size: 18px;
+            border-radius: 15px; /* Скругление углов */
+            margin-top: 20px; /* Отступ сверху */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes moveCoin {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Добро пожаловать в Кликер-игру!</h1>
+
+    <p id="score">Счет: <span id="scoreValue">0</span><img id="coinIcon" src="https://i.ibb.co/JjKbr6P/button-image.png" alt="Coin"></p>
+
+    <div id="clickerButton" onclick="handleClick()">
+        <img src="https://i.ibb.co/JjKbr6P/button-image.png" alt="Кнопка">
+    </div>
+
+    <div id="outputButton" onclick="handleOutput()">Вывод</div>
+
+    <script>
+        // Инициализация переменных
+        let score = parseInt(localStorage.getItem('clickerScore')) || 0;
+
+        // Функция для обновления счета
+        function updateScore() {
+            document.getElementById('scoreValue').innerText = score;
+            // Применяем анимацию для монетки при каждом новом разряде
+            document.getElementById('coinIcon').style.animation = 'none';
+            void document.getElementById('coinIcon').offsetWidth;
+            document.getElementById('coinIcon').style.animation = 'moveCoin 0.5s ease';
+            localStorage.setItem('clickerScore', score);
+        }
+
+        // Обработчик клика по изображению
+        function handleClick() {
+            // Увеличиваем счет при каждом клике
+            score += 1;
+            // Обновляем отображение счета
+            updateScore();
+            // Применяем анимацию
+            document.getElementById('clickerButton').style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                document.getElementById('clickerButton').style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Вызываем функцию обновления счета при загрузке страницы
+        window.onload = function() {
+            updateScore();
+        };
+
+        // Обработчик клика по кнопке "Вывод"
+        function handleOutput() {
+            // Добавьте здесь логику для вывода результата, например, alert(score);
+            // В данном случае пока просто показываем алерт
+            alert('Функционал вывода в разработке');
+        }
+    </script>
+
+</body>
+</html>
